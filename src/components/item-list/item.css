@@ -1,0 +1,9 @@
+.item-container {
+    border: 1px solid red;
+    display: flex;
+    justify-content: space-between;
+}
+
+.item-container .item-name {
+    font-size: 10px;
+}
