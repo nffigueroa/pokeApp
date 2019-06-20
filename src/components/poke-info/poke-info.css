@@ -1,0 +1,25 @@
+.poke-info {
+    background-color: beige;
+    border-radius: 10px;
+    padding: 10px;
+    width: 80%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.info-container {
+    display: flex;
+}
+.info-container .detail-container {
+    display: flex;
+    flex-direction: column;
+}
+.info-container .detail {
+    text-transform: uppercase;
+}
+
+.info-container .label {
+    font-weight: bold;
+}

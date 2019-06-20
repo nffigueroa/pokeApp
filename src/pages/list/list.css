@@ -1,6 +1,19 @@
 .list-container {
-    border: 2px dotted darkcyan;
+    display: flex;
+    flex-wrap: wrap;
 }
-.list-container .pokemon-name{
-    
+.list-container .list{
+    margin-top: 50px;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.nav {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+.nav span {
+    margin: 10px;
 }

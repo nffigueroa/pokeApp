@@ -1,8 +1,12 @@
 
 import {pokeEndpoint, pokeOption} from '../config/';
 
-export function getPokemonList() {
-    return fetch(`${pokeEndpoint}${pokeOption.pokemon}`)
+/**
+ * Pagination
+ * @param {*} url 
+ */
+export function getPokemonList(url) {
+    return fetch(url ? url : `${pokeEndpoint}${pokeOption.pokemon}`)
     .then((response) => {
       return response.json()
       .then((res) => {
@@ -21,7 +25,9 @@ export function getPokemonList() {
     .then((response) => {
       return response.json()
       .then((res) => {
-        return res.sprite[spriteType];
+        return spriteType
+        ? res.sprite[spriteType] 
+        : res.sprite;;
       })
     });
   }
@@ -31,12 +37,27 @@ export function getPokemonList() {
    * @param {*} pokeUrl Url for query the pokemon info
    * @returns All the object with the corresponding info about the pokemon
    */
-export function getPokeInfo (pokeUrl) {
-  return fetch(pokeUrl)
+export function getPokeInfo (pokeUrl, id) {
+  return fetch(pokeUrl ? pokeUrl : `${pokeEndpoint}${pokeOption.pokemon}/${id}`)
   .then((response) => {
     return response.json()
     .then((info) => {
           return info;
       })
   });
+}
+
+export function getAllPokemonInfo (url) {
+    let infoComplete;
+    return getPokemonList(url)
+    .then((e) => {
+        return Promise.resolve(infoComplete = e);
+    })
+    .then(async () => {
+        infoComplete.results.forEach((pokemon) => {
+           pokemon.id = pokemon.url.split('pokemon/')[1].replace('/', '');
+        })
+        return Promise.resolve(infoComplete);
+    })
+    .catch((e) => console.log(e));
 }

@@ -21,3 +21,5 @@ export const pokeSprite = {
     front_shiny: 'front_shiny',
     front_shiny_female: 'front_shiny_female'
 }
+
+export const countAllPokemon = 964;
