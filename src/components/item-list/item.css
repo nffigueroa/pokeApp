@@ -5,6 +5,14 @@
     height: 40px;
     width: 49%;
 }
+.item-contianer-selected {
+    border: 1px solid teal;
+    display: flex;
+    justify-content: space-between;
+    height: 40px;
+    width: 49%;
+    background-color: forestgreen;
+}
 @media (min-width: 990px) {
     .item-container {
         width: 20%;

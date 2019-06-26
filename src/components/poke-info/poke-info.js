@@ -1,30 +1,47 @@
 import React from 'react';
 import './poke-info.css';
-import { getPokemonSprite } from '../../services';
 
 class PokeInfoComponent extends React.Component {
     constructor(props){
         super(props);
+        this.state = {
+            pokeInfo: this.props
+        }
     }
-    componentDidUpdate() {
+    renderMoves = () => {
+
+        return (
+                this.props.moves.map((move, index) => {
+                    return (<span key={index} className="label">
+                                {move.move.name}
+                            </span>)
+                })
+        )
     }
     render () {
+        const {hp, imgSrc, name} = this.props;
         return (
             <section className="poke-info">
+                <article className="card">
                 <div className="title"><h1>POKE-INFO</h1></div>
                 <div className="img-container">
-                    <img src={this.props.imgSrc} />
+                    <img src={imgSrc} />
                 </div>
                 <div className="info-container">
                     <div className="detail-container">
                         <span className="label">Name:</span>
-                        <span className="detail">{this.props.name}</span>
+                        <span className="detail">{name}</span>
                     </div>
+
                     <div className="detail-container">
-                        <span className="name">{this.props.height}</span>
+                        <span className="label">HP:</span>
+                        <span className="name">{hp}</span>
                     </div>
-                    
+                   
                 </div>
+              
+                </article>
+                
             </section>
         )
     }

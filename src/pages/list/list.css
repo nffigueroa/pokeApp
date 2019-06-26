@@ -9,6 +9,9 @@
     flex-wrap: wrap;
     justify-content: center;
 }
+.list-container .poke-card {
+    display: flex;
+}
 .nav {
     display: flex;
     justify-content: center;
@@ -16,4 +19,23 @@
 }
 .nav span {
     margin: 10px;
+}
+.cta-start-fight{
+    position: fixed;
+    transition-property: top;
+    transition: .5s ;
+    top: 0;
+    height: 100px;
+    width: 200px;
+    border-radius: 10px;
+    left: 40%;
+}
+.cta-start-fight-hidden{
+    position: fixed;
+    transition-property: top;
+    transition: .5s ;
+    top: -200px;
+    height: 100px;
+    width: 200px;
+    border-radius: 10px;
 }

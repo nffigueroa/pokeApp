@@ -18,8 +18,11 @@ class PokeList extends React.Component {
                 }]
             },
             showPokemon: {
-                id: ''
-            }
+                id: '',
+                isSelected: false,
+            },
+            pokemonFight : [],
+            showButton: false
         }
     }
 
@@ -28,12 +31,13 @@ class PokeList extends React.Component {
     }
     prepopulateList (url) {
         getAllPokemonInfo(url)
-        .then((response) => {
+        .then((response) => Promise.resolve(response))
+        .then(({next, previous, results}) => {
             this.setState({
                 pokeList: {
-                    nextPage: response.next,
-                    previousPage: response.previous,
-                    results: response.results
+                    nextPage: next,
+                    previousPage: previous,
+                    results
                 }
             })
         })
@@ -41,41 +45,71 @@ class PokeList extends React.Component {
     /**
      * It gets the value from the child component and set it to the state
      */
-    showPokeInfo = async (id) => {
-       await this.setState((state) => state.showPokemon.id = id);
-       this.clickItem ();
+    showPokeInfo =  (id) => {
+        const deleteItem = !!this.state.pokemonFight.filter((item) => id == item.id)[0];
+        getPokeInfo(null, id)
+        .then((response) => response)
+        .then((response) => {
+            if (deleteItem) {
+                return Promise.resolve(response);
+            }
+            this.setState(({
+                showPokemon : {
+                    id,
+                    response
+                },
+                pokemonFight:[ ...this.state.pokemonFight , response],
+                showButton: this.state.pokemonFight.length > 2
+            }))
+         })
+       /* .then((response) => {
+            return new Promise((resolve, reject) => {
+                this.setState((state) => {
+                    state.showPokemon = this.state.showPokemon;
+                    state.pokemonFight.forEach((item, index) => {
+                        return deleteItem ? state.pokemonFight.splice(index, 1) : item;
+                    })
+                })
+                resolve(response);
+            })
+        })*/
+        .catch((e) => console.log(e));
     }
     /**
      * It builds the list calling the child component ItemList
      */
     buildList = () => {
         return this.state.pokeList.results.map((pokemon) => {
-            return <ItemList returnIdOnClick={this.showPokeInfo} key={pokemon.id} name={pokemon.name} id={pokemon.id} />;
-        })
-    }
-    clickItem = async () => {
-        await this.setState((state) => {
-            getPokeInfo(null, this.state.showPokemon.id)
-            .then((response) => {
-                state.showPokemon = {response};
-            })
-            .catch((e) => console.log(e));
+            return <ItemList isSelected={!!this.state.pokemonFight.filter((item => String(item.id) === String(pokemon.id)))[0]} returnIdOnClick={this.showPokeInfo} key={pokemon.id} name={pokemon.name} id={pokemon.id} />;
         })
     }
     navPage = (event) => {
+        event.preventDefault();
         this.prepopulateList(event.target.id === 'next' 
         ? this.state.pokeList.nextPage 
         : this.state.pokeList.previousPage);
     }
     renderSquare = () => {
-        const pokemon = this.state.showPokemon.response;
-        return (
-            <PokeInfoComponent height={pokemon.height} name={pokemon.name} imgSrc={pokemon.sprites[pokeSprite.front_default]} />
-        )
+        const pokemon = this.state.pokemonFight;
+        return pokemon.map((pok) => {
+            return (
+                <div className="poke-card" key={pok.id}>
+                <PokeInfoComponent 
+                    height={pok.height} 
+                    name={pok.name} 
+                    imgSrc={pok.sprites[pokeSprite.front_default]} 
+                    weight={pok.weight} 
+                    hp={(pok.height * pok.weight - (( Math.random() * ((10) + (-10) + -10) ) / 100)).toFixed(0)}
+                    moves={pok.moves}
+                />
+                </div>
+            )
+        })
     }
 
     render() {
         return (
+            <React.Fragment><button id="cta-btn" className={this.state.showButton ? 'cta-start-fight' : 'cta-start-fight-hidden'}><span>START A FIGHT!</span></button>
             <section className="list-container">
                 <div className="list">{this.state.pokeList.results.length > 2 ? this.buildList() : <h1>Cargando....</h1>}</div>
                 <div className="nav">
@@ -83,6 +117,7 @@ class PokeList extends React.Component {
                 </div>
                 {this.state.showPokemon.response ? this.renderSquare() : ''}
             </section>
+            </React.Fragment>
         );
     }
 }
