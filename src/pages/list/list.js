@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 import { getAllPokemonInfo, getPokeInfo, getPokemonList } from '../../services';
 import ItemList from '../../components/item-list/item-list';
 
@@ -6,6 +7,7 @@ import ItemList from '../../components/item-list/item-list';
 import './list.css';
 import { pokeSprite } from '../../config';
 import PokeInfoComponent from '../../components/poke-info/poke-info';
+import ErrorBoundary from '../../components/error-boundary/ErrorBoundary';
 
 class PokeList extends React.Component {
     constructor(props) {
@@ -62,17 +64,6 @@ class PokeList extends React.Component {
                 showButton: this.state.pokemonFight.length > 2
             }))
          })
-       /* .then((response) => {
-            return new Promise((resolve, reject) => {
-                this.setState((state) => {
-                    state.showPokemon = this.state.showPokemon;
-                    state.pokemonFight.forEach((item, index) => {
-                        return deleteItem ? state.pokemonFight.splice(index, 1) : item;
-                    })
-                })
-                resolve(response);
-            })
-        })*/
         .catch((e) => console.log(e));
     }
     /**
@@ -109,14 +100,17 @@ class PokeList extends React.Component {
 
     render() {
         return (
-            <React.Fragment><button id="cta-btn" className={this.state.showButton ? 'cta-start-fight' : 'cta-start-fight-hidden'}><span>START A FIGHT!</span></button>
-            <section className="list-container">
-                <div className="list">{this.state.pokeList.results.length > 2 ? this.buildList() : <h1>Cargando....</h1>}</div>
-                <div className="nav">
-                    <span><a id="back" href="#" onClick={this.navPage}> {'<='} </a> <br /> </span><span><a href="#" onClick={this.navPage} id="next">=></a></span>
-                </div>
-                {this.state.showPokemon.response ? this.renderSquare() : ''}
-            </section>
+            <React.Fragment>
+               
+                <button id="cta-btn" className={this.state.showButton ? 'cta-start-fight' : 'cta-start-fight-hidden'}><Link to="/fight" className="block-menu__item">START A FIGHT!</Link></button>
+                <section className="list-container">
+                    <div className="list">{this.state.pokeList.results.length > 2 ? this.buildList() : <h1>Cargando....</h1>}</div>
+                    <div className="nav">
+                        <span><a id="back" href="#" onClick={this.navPage}> {'<='} </a> <br /> </span><span><a href="#" onClick={this.navPage} id="next">=></a></span>
+                    </div>
+                    {this.state.showPokemon.response ? this.renderSquare() : ''}
+
+                </section>
             </React.Fragment>
         );
     }
