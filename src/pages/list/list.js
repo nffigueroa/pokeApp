@@ -97,19 +97,27 @@ class PokeList extends React.Component {
             )
         })
     }
-
+    saveState = () => {
+        sessionStorage.setItem('pokemonFight', JSON.stringify(this.state.pokemonFight));
+        sessionStorage.setItem('pokeList', JSON.stringify(this.state.pokeList.results));
+    }
     render() {
+        const fightObj = {
+                        pathname: '/fight',
+                        state: {
+                            pokemonFight: this.state.pokemonFight,
+                            pokeList: this.state.pokeList
+                        }
+                    }
         return (
             <React.Fragment>
-               
-                <button id="cta-btn" className={this.state.showButton ? 'cta-start-fight' : 'cta-start-fight-hidden'}><Link to="/fight" className="block-menu__item">START A FIGHT!</Link></button>
+                <button onClick={this.saveState} id="cta-btn" className={this.state.showButton ? 'cta-start-fight' : 'cta-start-fight-hidden'}><Link to={fightObj} className="block-menu__item">START A FIGHT!</Link></button>
                 <section className="list-container">
                     <div className="list">{this.state.pokeList.results.length > 2 ? this.buildList() : <h1>Cargando....</h1>}</div>
                     <div className="nav">
                         <span><a id="back" href="#" onClick={this.navPage}> {'<='} </a> <br /> </span><span><a href="#" onClick={this.navPage} id="next">=></a></span>
                     </div>
                     {this.state.showPokemon.response ? this.renderSquare() : ''}
-
                 </section>
             </React.Fragment>
         );

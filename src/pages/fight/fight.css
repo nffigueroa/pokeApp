@@ -1,0 +1,94 @@
+.pokemon-fight {
+
+}
+
+.pokemon-remaining{
+ display: flex;
+ justify-content: space-between;
+ width: 200px;
+ margin-top: 10px;
+}
+.pokeball{
+    border: .5px solid black;
+    border-radius: 50%;
+}
+.pokemon-remaining .background-red{
+    border-radius: 50%;
+    background-color: red;   
+    width: 16px;
+    height: 15px;
+    position: relative;
+}
+
+.pokemon-remaining .background-white{
+    background-color: white;
+    height: 50%;
+    width: 100%;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 0;
+    transform: rotate(180deg);
+}
+
+.container-pokeball{
+    margin: auto;
+    margin-top: 10px;
+    width: 200px;
+    max-width: 250px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    -webkit-box-shadow: 10px 10px 56px -8px rgba(0,0,0,0.59);
+    -moz-box-shadow: 10px 10px 56px -8px rgba(0,0,0,0.59);
+    box-shadow: 10px 10px 56px -8px rgba(0,0,0,0.59);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.pf-player-one {
+    background-color: coral;
+    margin: 100px;
+    border-radius: 10px;
+    padding: 50px;
+    text-transform: capitalize;
+
+}
+.pf-player-one img {
+    margin: auto;
+}
+.container-battle{
+    display: flex;
+    justify-content: center;
+}
+
+.progressbar {
+    background-color: yellowgreen;
+    height: 10px;
+    transition: 0.5s;
+    transition-property: width;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.moves {
+    height: 100px;
+    overflow-y: scroll;
+    cursor: pointer;
+}
+.moves-container{
+    background-color: white;
+    border-radius: initial;
+}
+.bubble{
+    background-color: beige;
+    opacity: 0;
+    border-radius: 10px;
+    width: 20px;
+    padding: 10px;
+    transition-property: bottom;
+    transition: 0.5s;
+    position: absolute;
+}
+.attk-bubble {
+    position: relative;
+}

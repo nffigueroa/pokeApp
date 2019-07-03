@@ -61,3 +61,33 @@ export function getAllPokemonInfo (url) {
     })
     .catch((e) => console.log(e));
 }
+
+export function getMoveDetail(url){
+  
+}
+
+export function getRandomEnemies(pokeList, cant) {
+  const pokeSelected = pokeList[(Math.random() * (pokeList.length - 1) + 1).toFixed(0)];
+  return getPokeInfo(null, pokeSelected.id)
+  .then((response) => {
+    return Promise.resolve(response);
+  })
+}
+
+export function getPokemonHp(height, weight) {
+  return (height * weight - (( Math.random() * ((10) + (-10) + -10) ) / 100)).toFixed(0);
+}
+
+export function getPokemonPowerInfoByMove(url) {
+  return fetch(url)
+  .then((response) =>  response.json());
+}
+
+export function getPowerByMove(url) {
+  getPokemonPowerInfoByMove(url)
+  .then(({accuracy, power}) => {
+    return Promise.resolve({
+      accuracy, power
+    })
+  })
+}
