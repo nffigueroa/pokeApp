@@ -75,7 +75,7 @@ export function getRandomEnemies(pokeList, cant) {
 }
 
 export function getPokemonHp(height, weight) {
-  return (height * weight - (( Math.random() * ((10) + (-10) + -10) ) / 100)).toFixed(0);
+  return (height * weight - (( Math.random() * ((50) + (-50) + -50) ) / 100)).toFixed(0);
 }
 
 export function getPokemonPowerInfoByMove(url) {

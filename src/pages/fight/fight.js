@@ -2,6 +2,8 @@ import React from 'react';
 import { getRandomEnemies, getPowerByMove, getPokemonPowerInfoByMove, getPokemonHp } from '../../services';
 import './fight.css';
 import { pokeSprite } from '../../config';
+import CardBatlle from '../../components/card-battle/card/CardBattle';
+import PokemonRemainingComponent from '../../components/pokemon-remaining/PokemonRemaining';
 
 class FightPage extends React.Component {
     constructor(props){
@@ -97,82 +99,19 @@ class FightPage extends React.Component {
             currentTurn: Number(this.state.currentTurn) === 1 ? 2 : 1
         })
     }
-    renderMoves =  (playerTwo) => {
-        const {pokemonPlayerOne, pokemonPlayerTwo} = this.state;
-        const showMoves = !!(pokemonPlayerOne.moves || pokemonPlayerTwo.moves);
-        const arrMoves = playerTwo ? pokemonPlayerTwo.moves : pokemonPlayerOne.moves;
-        if (showMoves && arrMoves) {
-             return (
-                 arrMoves.map( ({move}, index) => {
-                    return (
-                        <div className="moves-container" key={index} onClick={() => this.useAttack(move, playerTwo)}>
-                            <div className="move">{move.name}</div>
-                        </div>)
-                })
-            )
-        }
-    }
-    renderProgressBar = (playerTwo) => {
-        const {pokemonPlayerOne, pokemonPlayerTwo} = this.state;
-        const { currrentHp, hp } = playerTwo ? pokemonPlayerTwo : pokemonPlayerOne;
-        return (
-            <div className="progressbar" style={{width: `${currrentHp * 100 / hp}%`}}></div>
-        )
-    }
-    renderBubble = (fPrint) => {
-        return (
-            <div className="bubble" style={{opacity: fPrint ? 1 : 0, bottom: fPrint ? '-25px' : '-100px'}}>-{this.state.tAttk}</div>
-        )
-    }
-    renderPokemonCardBattle = () => {
-        const {pokemonPlayerOne, pokemonPlayerTwo, currentTurn} = this.state;
-        const showCard = pokemonPlayerOne && pokemonPlayerTwo;
-        if (showCard) {
-            return (<>
-                <section className="pf-player-one">
-                    <h1>{pokemonPlayerOne  ? pokemonPlayerOne.name : ''}</h1>
-                    <div className="attk-bubble">
-                    { this.renderBubble(Number(currentTurn) === 1) }
-                    </div>
-                    <img src={pokemonPlayerOne.sprites ? pokemonPlayerOne.sprites[pokeSprite.back_default] : ''} />
-                    <div className="container-progressbar">
-                        {this.renderProgressBar()}
-                    </div>
-                    <div className="moves">
-                        {this.renderMoves()}
-                    </div>
-                </section>
-                <section className="pf-player-one">
-                    <h1>{pokemonPlayerTwo ? pokemonPlayerTwo.name : ''}</h1>
-                    <div className="attk-bubble">
-                    { this.renderBubble(Number(currentTurn) === 2) }
-                    </div>
-                    <img src={pokemonPlayerTwo.sprites ? pokemonPlayerTwo.sprites[pokeSprite.front_default] : ''} />
-                    <div className="container-progressbar">
-                        {this.renderProgressBar(true)}
-                    </div>
-                    <div className="moves">
-                        {this.renderMoves(true)}
-                    </div>
-                </section>
-                </>
-            )
-        }
-    }
-
     render() {
         return (
             <div className="pokemon-fight">
                 <div className="container-pokeball">
                     <div className="pokemon-remaining">
-                       Player One: {this.renderPokemonRemaining()}
+                       Player One: <PokemonRemainingComponent {...this.state} showEnemies= {false} selectPok={this.selectPokemon} />
                     </div>
                     <div className="pokemon-remaining">
-                        Player Two: {this.renderPokemonRemaining(true)}
+                    Player One: <PokemonRemainingComponent {...this.state} showEnemies= {true}  selectPok={this.selectPokemon}/>
                     </div>
                 </div>
                     <div className="container-battle">
-                       {this.renderPokemonCardBattle()}
+                        <CardBatlle {...this.state} useAttk={this.useAttack}/>
                     </div>
             </div>
         );
