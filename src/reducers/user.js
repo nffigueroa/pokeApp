@@ -1,7 +1,7 @@
 
-import {ADD_USER} from '../actions/user';
+import { ADD_USER } from '../actions/user';
 
-export const UserReducer = (state, {type, payload}) => {
+export const UserReducer = (state = {}, {type, payload}) => {
     switch (type) {
         case ADD_USER:
             return {
@@ -9,6 +9,6 @@ export const UserReducer = (state, {type, payload}) => {
                 user: payload.user
             }
         default:
-            break;
+            return state;
     }
 }
