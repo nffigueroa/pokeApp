@@ -12,7 +12,7 @@ import ErrorBoundary from './components/error-boundary/ErrorBoundary';
 
 import  allReducers  from './reducers/';
 
-const store = createStore(allReducers, {})
+const store = createStore(allReducers, {}, window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__())
 
 function App() {
   return  <React.Fragment>

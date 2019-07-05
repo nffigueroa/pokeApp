@@ -6,7 +6,7 @@ export const UserReducer = (state = {}, {type, payload}) => {
         case ADD_USER:
             return {
                 ...state,
-                user: payload.user
+                user: payload
             }
         default:
             return state;
