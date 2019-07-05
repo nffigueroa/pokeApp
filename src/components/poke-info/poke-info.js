@@ -1,25 +1,8 @@
 import React from 'react';
 import './poke-info.css';
 
-class PokeInfoComponent extends React.Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            pokeInfo: this.props
-        }
-    }
-    renderMoves = () => {
-
-        return (
-                this.props.moves.map((move, index) => {
-                    return (<span key={index} className="label">
-                                {move.move.name}
-                            </span>)
-                })
-        )
-    }
-    render () {
-        const {hp, imgSrc, name} = this.props;
+const PokeInfoComponent = (props) => {
+        const {hp, imgSrc, name} = props;
         return (
             <section className="poke-info">
                 <article className="card">
@@ -44,7 +27,5 @@ class PokeInfoComponent extends React.Component {
                 
             </section>
         )
-    }
 }
-
 export default PokeInfoComponent;

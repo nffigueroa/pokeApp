@@ -57,20 +57,8 @@ class FightPage extends React.Component {
                 })
         }
     }
-    renderPokemonRemaining = (showEnemies) => {
-        const arrPokemon = showEnemies ? this.state.pokemonEnemies : this.state.pokemonFight;
-        return (arrPokemon.map((item, index) => {
-            return (
-                <div className="pokeball" onClick={(e) => this.selectPokemon(`${index}${showEnemies ? 'E' : 'F'}`, e) } key={index}>
-                    <div className="background-red">
-                        <div className="background-white"></div>
-                        </div>
-                </div>
-            )
-        }))
-    }
     useAttack = (move, playerTwo) => {
-        if ((playerTwo && Number(this.state.currentTurn) === 1) 
+        if ((playerTwo && Number(this.state.currentTurn) === 1)
         || (!playerTwo && Number(this.state.currentTurn) === 2)) {
             return
         }
@@ -84,19 +72,18 @@ class FightPage extends React.Component {
                     pokemonPlayerOne: {
                         ...this.state.pokemonPlayerOne,
                         currrentHp: this.state.pokemonPlayerOne.currrentHp - this.state.tAttk
-                    }
+                    },
+                    currentTurn: Number(this.state.currentTurn) === 1 ? 2 : 1
                 })
             } else {
                 this.setState({
                     pokemonPlayerTwo: {
                         ...this.state.pokemonPlayerTwo,
-                        currrentHp: this.state.pokemonPlayerTwo.currrentHp - this.state.tAttk
-                    }
+                        currrentHp: this.state.pokemonPlayerTwo.currrentHp - this.state.tAttk,
+                    },
+                    currentTurn: Number(this.state.currentTurn) === 1 ? 2 : 1
                 })
             }
-        })
-        this.setState({
-            currentTurn: Number(this.state.currentTurn) === 1 ? 2 : 1
         })
     }
     render() {
@@ -107,7 +94,7 @@ class FightPage extends React.Component {
                        Player One: <PokemonRemainingComponent {...this.state} showEnemies= {false} selectPok={this.selectPokemon} />
                     </div>
                     <div className="pokemon-remaining">
-                    Player One: <PokemonRemainingComponent {...this.state} showEnemies= {true}  selectPok={this.selectPokemon}/>
+                    Player Two: <PokemonRemainingComponent {...this.state} showEnemies= {true}  selectPok={this.selectPokemon}/>
                     </div>
                 </div>
                     <div className="container-battle">
