@@ -1,5 +1,6 @@
 import React from 'react';
 import './poke-info.css';
+import ImgComponent from './img';
 
 const PokeInfoComponent = (props) => {
         const {hp, imgSrc, name} = props;
@@ -8,7 +9,7 @@ const PokeInfoComponent = (props) => {
                 <article className="card">
                 <div className="title"><h1>POKE-INFO</h1></div>
                 <div className="img-container">
-                    <img src={imgSrc} />
+                <ImgComponent imgSrc={imgSrc} />
                 </div>
                 <div className="info-container">
                     <div className="detail-container">

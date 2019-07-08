@@ -2,12 +2,15 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import { getAllPokemonInfo, getPokeInfo, getPokemonList } from '../../services';
 import ItemList from '../../components/item-list/item-list';
+import {addOneToFight, addToPokeList, selectOneToFigth} from '../../actions/index';
 
+import {connect} from 'react-redux';
 
 import './list.css';
 import { pokeSprite } from '../../config';
 import PokeInfoComponent from '../../components/poke-info/poke-info';
-import ErrorBoundary from '../../components/error-boundary/ErrorBoundary';
+import HeaderComponent from '../../components/header/header';
+import { bindActionCreators } from 'redux';
 
 class PokeList extends React.Component {
     constructor(props) {
@@ -35,6 +38,11 @@ class PokeList extends React.Component {
         getAllPokemonInfo(url)
         .then((response) => Promise.resolve(response))
         .then(({next, previous, results}) => {
+            this.props.addToPokeList({
+                nextPage: next,
+                previousPage: previous,
+                results
+            })
             this.setState({
                 pokeList: {
                     nextPage: next,
@@ -55,6 +63,7 @@ class PokeList extends React.Component {
             if (deleteItem) {
                 return Promise.resolve(response);
             }
+            this.props.addOneToFight([ ...this.state.pokemonFight , response]);
             this.setState(({
                 showPokemon : {
                     id,
@@ -100,17 +109,18 @@ class PokeList extends React.Component {
     saveState = () => {
         sessionStorage.setItem('pokemonFight', JSON.stringify(this.state.pokemonFight));
         sessionStorage.setItem('pokeList', JSON.stringify(this.state.pokeList.results));
+        this.props.addToPokeList(this.state.pokeList.results);
+       
     }
     render() {
         const fightObj = {
                         pathname: '/fight',
-                        state: {
-                            pokemonFight: this.state.pokemonFight,
-                            pokeList: this.state.pokeList
-                        }
                     }
         return (
             <React.Fragment>
+                <div className="header-container">
+                    <HeaderComponent></HeaderComponent>
+                </div>
                 <button onClick={this.saveState} id="cta-btn" className={this.state.showButton ? 'cta-start-fight' : 'cta-start-fight-hidden'}><Link to={fightObj} className="block-menu__item">START A FIGHT!</Link></button>
                 <section className="list-container">
                     <div className="list">{this.state.pokeList.results.length > 2 ? this.buildList() : <h1>Cargando....</h1>}</div>
@@ -119,9 +129,13 @@ class PokeList extends React.Component {
                     </div>
                     {this.state.showPokemon.response ? this.renderSquare() : ''}
                 </section>
-            </React.Fragment>
+            </React.Fragment>   
         );
     }
 }
+const maptStateToProps = (state) => ({
+    state
+})
+const mapActionToProps = (dispatch) => bindActionCreators({addOneToFight, addToPokeList, selectOneToFigth}, dispatch)
 
-export default PokeList;
+export default connect(maptStateToProps, mapActionToProps)(PokeList);

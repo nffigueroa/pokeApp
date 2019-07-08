@@ -4,40 +4,57 @@ import BubbleComponent from '../bubble/Bubble';
 import ProgressBarComponent from '../progressbar/ProgressBar';
 import MovesComponent from '../moves/Moves';
 
-const CardBatlle = (props) => {
-    const {pokemonPlayerOne, pokemonPlayerTwo, currentTurn, useAttk} = props;
+class CardBatlle extends React.PureComponent {
+    constructor(props){
+        super(props);
+        this.state = {
+                image1: false,
+                image2: false
+            }
+
+    }
+    render() {
+        const {pokemonPlayerOne, pokemonPlayerTwo, currentTurn, useAttk} = this.props;
         const showCard = pokemonPlayerOne && pokemonPlayerTwo;
         if (showCard) {
             return (<>
                 <section className="pf-player-one">
                     <h1>{pokemonPlayerOne  ? pokemonPlayerOne.name : ''}</h1>
                     <div className="attk-bubble">
-                        <BubbleComponent fPrint={Number(currentTurn) === 1} {...props}/>
+                        <BubbleComponent fPrint={Number(currentTurn) === 1} {...this.props}/>
                     </div>
-                    <img src={pokemonPlayerOne.sprites ? pokemonPlayerOne.sprites[pokeSprite.back_default] : ''} />
+                    {!this.state.image1 
+                    ?<i className="fas fa-spinner fa-pulse" />  
+                    :''}
+                    <img onLoad={ () => this.setState({image1: true})} src={pokemonPlayerOne.sprites ? pokemonPlayerOne.sprites[pokeSprite.back_default] : ''} />
                     <div className="container-progressbar">
-                        <ProgressBarComponent {...props} />
+                        <ProgressBarComponent {...this.props} />
                     </div>
                     <div className="moves">
-                        <MovesComponent useAttack={useAttk} {...props} />
+                        <MovesComponent useAttack={useAttk} {...this.props} />
                     </div>
                 </section>
                 <section className="pf-player-one">
                     <h1>{pokemonPlayerTwo ? pokemonPlayerTwo.name : ''}</h1>
                     <div className="attk-bubble">
-                        <BubbleComponent fPrint={Number(currentTurn) === 2} {...props} />
+                        <BubbleComponent fPrint={Number(currentTurn) === 2} {...this.props} />
                     </div>
-                    <img src={pokemonPlayerTwo.sprites ? pokemonPlayerTwo.sprites[pokeSprite.front_default] : ''} />
+                    {!this.state.image2 
+                    ? <i className="fas fa-spinner fa-pulse" />
+                    : ''}
+                    <img onLoad={ () => this.setState({image2: true})}  src={pokemonPlayerTwo.sprites ? pokemonPlayerTwo.sprites[pokeSprite.front_default] : ''} /> 
                     <div className="container-progressbar">
-                        <ProgressBarComponent {...props} playerTwo= {true} />
+                        <ProgressBarComponent {...this.props} playerTwo= {true} />
                     </div>
                     <div className="moves">
-                        <MovesComponent playerTwo={true} uAttack={useAttk}  {...props}/>
+                        <MovesComponent playerTwo={true} uAttack={useAttk}  {...this.props}/>
                     </div>
                 </section>
                 </>
             )
         }
+    }
+    
 }
  
 export default CardBatlle;

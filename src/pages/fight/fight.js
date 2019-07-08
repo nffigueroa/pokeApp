@@ -4,14 +4,18 @@ import './fight.css';
 import { pokeSprite } from '../../config';
 import CardBatlle from '../../components/card-battle/card/CardBattle';
 import PokemonRemainingComponent from '../../components/pokemon-remaining/PokemonRemaining';
+import WithAuthentication from '../../enhancers/withAuth';
+import {connect} from 'react-redux';
+import { bindActionCreators } from 'redux';
+import {addEnemies} from '../../actions/index';
 
 class FightPage extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            pokemonFight: this.props.location.state.pokemonFight,
+           // pokemonFight: this.props.location.state.pokemonFight,
             pokemonEnemies: [],
-            pokeList: this.props.location.state.pokeList.results,
+            // pokeList: this.props.location.state.pokeList.results,
             pokemonPlayerOne: {},
             pokemonPlayerTwo: {},
             tAttk: 0, //Total Attack
@@ -20,9 +24,12 @@ class FightPage extends React.Component {
     }
 
     componentDidMount() {
-        this.state.pokemonFight.map(() => {
-            getRandomEnemies(this.state.pokeList, this.state.pokemonFight.length)
-            .then((response) => this.setState({ pokemonEnemies: [...this.state.pokemonEnemies, response] }))
+        this.props.pokemonFight.pokemonFight.map(() => {
+            getRandomEnemies(this.props.pokeList.pokeList, this.props.pokemonFight.pokemonFight.length)
+            .then((response) => {
+                this.setState({ pokemonEnemies: [...this.props.pokeEnemies, response] });
+                this.props.addEnemies([...this.props.pokeEnemies, response])
+            })
         })
         this.setState({
             pokemonPlayerOne:
@@ -41,18 +48,18 @@ class FightPage extends React.Component {
                 {
                     pokemonPlayerTwo :
                     {
-                        ...this.state.pokemonEnemies[id[0]],
-                        hp: getPokemonHp(this.state.pokemonEnemies[id[0]].height, this.state.pokemonEnemies[id[0]].weight),
-                        currrentHp: getPokemonHp(this.state.pokemonEnemies[id[0]].height, this.state.pokemonEnemies[id[0]].weight)
+                        ...this.props.pokeEnemies[id[0]],
+                        hp: getPokemonHp(this.props.pokeEnemies[id[0]].height, this.props.pokeEnemies[id[0]].weight),
+                        currrentHp: getPokemonHp(this.props.pokeEnemies[id[0]].height, this.props.pokeEnemies[id[0]].weight)
                     }
                 })
         } else {
             this.setState(
                 {
                     pokemonPlayerOne : {
-                        ...this.state.pokemonFight[id[0]],
-                        hp: getPokemonHp(this.state.pokemonFight[id[0]].height, this.state.pokemonFight[id[0]].weight),
-                        currrentHp: getPokemonHp(this.state.pokemonFight[id[0]].height, this.state.pokemonFight[id[0]].weight)
+                        ...this.props.pokemonFight.pokemonFight[id[0]],
+                        hp: getPokemonHp(this.props.pokemonFight.pokemonFight[id[0]].height, this.props.pokemonFight.pokemonFight[id[0]].weight),
+                        currrentHp: getPokemonHp(this.props.pokemonFight.pokemonFight[id[0]].height, this.props.pokemonFight.pokemonFight[id[0]].weight)
                     }
                 })
         }
@@ -91,10 +98,10 @@ class FightPage extends React.Component {
             <div className="pokemon-fight">
                 <div className="container-pokeball">
                     <div className="pokemon-remaining">
-                       Player One: <PokemonRemainingComponent {...this.state} showEnemies= {false} selectPok={this.selectPokemon} />
+                       Player One: <PokemonRemainingComponent shoeEnemies={false} pokemonFight={this.props.pokemonFight.pokemonFight}  selectPok={this.selectPokemon} />
                     </div>
                     <div className="pokemon-remaining">
-                    Player Two: <PokemonRemainingComponent {...this.state} showEnemies= {true}  selectPok={this.selectPokemon}/>
+                    Player Two: <PokemonRemainingComponent showEnemies={true} pokemonFight={this.props.pokemonFight.pokemonFight} selectPok={this.selectPokemon} />
                     </div>
                 </div>
                     <div className="container-battle">
@@ -105,4 +112,14 @@ class FightPage extends React.Component {
     }
 }
 
-export default FightPage;
+const mapStateToProps = (state) => ({
+    userName: !!state.user.payload,
+    password: !!state.user.payload,
+    pokemonFight: state.pokemon.pokemonFight.payload,
+    pokeList: state.pokemon.pokeList.payload,
+    pokeEnemies: state.pokemon.pokeEnemies ? state.pokemon.pokeEnemies.payload : []
+})
+
+const mapDispacthToProps  = (dispatch) => bindActionCreators({addEnemies}, dispatch);
+
+export default connect(mapStateToProps, mapDispacthToProps)(WithAuthentication(FightPage));
