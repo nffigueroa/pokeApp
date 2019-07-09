@@ -14,11 +14,12 @@ class CardBatlle extends React.PureComponent {
 
     }
     render() {
+        //TODO Segregate  this block into another component wich provide one card battle.
         const {pokemonPlayerOne, pokemonPlayerTwo, currentTurn, useAttk} = this.props;
         const showCard = pokemonPlayerOne && pokemonPlayerTwo;
         if (showCard) {
             return (<>
-                <section className="pf-player-one">
+                <section className="pf-player-one" style={{boxShadow: Number(currentTurn) === 1 ? '10px 10px 56px 23px rgba(0,0,0,0.59)' : ''}}>
                     <h1>{pokemonPlayerOne  ? pokemonPlayerOne.name : ''}</h1>
                     <div className="attk-bubble">
                         <BubbleComponent fPrint={Number(currentTurn) === 1} {...this.props}/>
@@ -26,7 +27,7 @@ class CardBatlle extends React.PureComponent {
                     {!this.state.image1 
                     ?<i className="fas fa-spinner fa-pulse" />  
                     :''}
-                    <img onLoad={ () => this.setState({image1: true})} src={pokemonPlayerOne.sprites ? pokemonPlayerOne.sprites[pokeSprite.back_default] : ''} />
+                    <img alt="Img" onLoad={ () => this.setState({image1: true})} src={pokemonPlayerOne.sprites ? pokemonPlayerOne.sprites[pokeSprite.back_default] : ''} />
                     <div className="container-progressbar">
                         <ProgressBarComponent {...this.props} />
                     </div>
@@ -34,7 +35,7 @@ class CardBatlle extends React.PureComponent {
                         <MovesComponent useAttack={useAttk} {...this.props} />
                     </div>
                 </section>
-                <section className="pf-player-one">
+                <section className="pf-player-one" style={{boxShadow: Number(currentTurn) === 2 ? '10px 10px 56px 23px rgba(0,0,0,0.59)' : ''}}>
                     <h1>{pokemonPlayerTwo ? pokemonPlayerTwo.name : ''}</h1>
                     <div className="attk-bubble">
                         <BubbleComponent fPrint={Number(currentTurn) === 2} {...this.props} />
@@ -42,7 +43,7 @@ class CardBatlle extends React.PureComponent {
                     {!this.state.image2 
                     ? <i className="fas fa-spinner fa-pulse" />
                     : ''}
-                    <img onLoad={ () => this.setState({image2: true})}  src={pokemonPlayerTwo.sprites ? pokemonPlayerTwo.sprites[pokeSprite.front_default] : ''} /> 
+                    <img alt="Img" onLoad={ () => this.setState({image2: true})}  src={pokemonPlayerTwo.sprites ? pokemonPlayerTwo.sprites[pokeSprite.front_default] : ''} /> 
                     <div className="container-progressbar">
                         <ProgressBarComponent {...this.props} playerTwo= {true} />
                     </div>

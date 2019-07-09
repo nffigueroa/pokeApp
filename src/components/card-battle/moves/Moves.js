@@ -1,7 +1,7 @@
 import React from 'react';
 
 const MovesComponent = (props) => {
-    const {pokemonPlayerOne, pokemonPlayerTwo, uAttack, playerTwo} = props;
+    const {pokemonPlayerOne, pokemonPlayerTwo, playerTwo} = props;
         const showMoves = !!(pokemonPlayerOne.moves || pokemonPlayerTwo.moves);
         const arrMoves = playerTwo ? pokemonPlayerTwo.moves : pokemonPlayerOne.moves;
         if (showMoves && arrMoves) {

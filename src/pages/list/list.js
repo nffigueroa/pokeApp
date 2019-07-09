@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import { getAllPokemonInfo, getPokeInfo, getPokemonList } from '../../services';
+import { getAllPokemonInfo, getPokeInfo } from '../../services';
 import ItemList from '../../components/item-list/item-list';
 import {addOneToFight, addToPokeList, selectOneToFigth} from '../../actions/index';
 
@@ -57,7 +57,7 @@ class PokeList extends React.Component {
      * It gets the value from the child component and set it to the state
      */
     showPokeInfo =  (id) => {
-        const deleteItem = !!this.state.pokemonFight.filter((item) => id == item.id)[0];
+        const deleteItem = !!this.state.pokemonFight.filter((item) => String(id) === String(item.id))[0];
         getPokeInfo(null, id)
         .then((response) => response)
         .then((response) => {

@@ -9,7 +9,6 @@ class InputSearch extends React.Component {
         }
     }
     emitValue = (e) => {
-        console.log(e.target.value)
        // this.props.cb({text : e.target.value})
     }
     render () {

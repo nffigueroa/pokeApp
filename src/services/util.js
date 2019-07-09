@@ -67,7 +67,8 @@ export function getMoveDetail(url){
 }
 
 export function getRandomEnemies(pokeList, cant) {
-  const pokeSelected = pokeList[(Math.random() * (pokeList.length - 1) + 1).toFixed(0)];
+  let random  = (Math.random() * (pokeList.length - 0) + 0).toFixed(0);
+  const pokeSelected = pokeList[(random)];
   return getPokeInfo(null, pokeSelected.id)
   .then((response) => {
     return Promise.resolve(response);
