@@ -11,6 +11,7 @@ import { pokeSprite } from '../../config';
 import PokeInfoComponent from '../../components/poke-info/poke-info';
 import HeaderComponent from '../../components/header/header';
 import { bindActionCreators } from 'redux';
+import WithAuthentication from '../../enhancers/withAuth';
 
 class PokeList extends React.Component {
     constructor(props) {
@@ -134,8 +135,10 @@ class PokeList extends React.Component {
     }
 }
 const maptStateToProps = (state) => ({
-    state
+    state,
+    userName: !!state.user.payload,
+    password: !!state.user.payload,
 })
 const mapActionToProps = (dispatch) => bindActionCreators({addOneToFight, addToPokeList, selectOneToFigth}, dispatch)
 
-export default connect(maptStateToProps, mapActionToProps)(PokeList);
+export default connect(maptStateToProps, mapActionToProps)(WithAuthentication(PokeList));
